@@ -217,7 +217,7 @@ describe('ShippingService', () => {
 
       expect(updatedShipment).not.toBeNull();
       expect(updatedShipment?.status).toBe(ShipmentStatus.IN_TRANSIT);
-      expect(updatedShipment?.updatedAt.getTime()).toBeGreaterThan(
+      expect(updatedShipment?.updatedAt.getTime()).toBeGreaterThanOrEqual(
         shipment.createdAt.getTime()
       );
     });

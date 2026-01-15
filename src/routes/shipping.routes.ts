@@ -1,10 +1,7 @@
 import { Router } from 'express';
 import shippingController from '../controllers/shipping.controller';
 import { validate } from '../middleware/validator.middleware';
-import {
-  shipmentRequestSchema,
-  trackingNumberSchema,
-} from '../validators/shipping.validator';
+import { shipmentRequestSchema } from '../validators/shipping.validator';
 import Joi from 'joi';
 
 const router = Router();
