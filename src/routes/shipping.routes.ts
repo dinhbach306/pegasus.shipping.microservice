@@ -1,7 +1,12 @@
 import { Router } from 'express';
 import shippingController from '../controllers/shipping.controller';
 import { validate } from '../middleware/validator.middleware';
-import { shipmentRequestSchema } from '../validators/shipping.validator';
+import { validateParams } from '../middleware/paramValidator.middleware';
+import {
+  shipmentRequestSchema,
+  trackingNumberSchema,
+} from '../validators/shipping.validator';
+import { ShipmentStatus } from '../types/shipping.types';
 import Joi from 'joi';
 
 const router = Router();
@@ -32,6 +37,11 @@ router.post(
  */
 router.get(
   '/tracking/:trackingNumber',
+  validateParams(
+    Joi.object({
+      trackingNumber: trackingNumberSchema,
+    })
+  ),
   shippingController.getTracking.bind(shippingController)
 );
 
@@ -41,10 +51,15 @@ router.get(
  */
 router.put(
   '/shipments/:trackingNumber/status',
+  validateParams(
+    Joi.object({
+      trackingNumber: trackingNumberSchema,
+    })
+  ),
   validate(
     Joi.object({
       status: Joi.string()
-        .valid('PENDING', 'PICKED_UP', 'IN_TRANSIT', 'OUT_FOR_DELIVERY', 'DELIVERED', 'FAILED')
+        .valid(...Object.values(ShipmentStatus))
         .required(),
     })
   ),
