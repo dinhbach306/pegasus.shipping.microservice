@@ -1,0 +1,256 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/identity/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/identity/register",
+      "UpstreamHttpMethod": ["POST"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/identity/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/identity/login",
+      "UpstreamHttpMethod": ["POST"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/identity/login/google",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/identity/login/google",
+      "UpstreamHttpMethod": ["GET"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/identity/callback",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/identity/callback",
+      "UpstreamHttpMethod": ["GET"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/identity/me",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/identity/me",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/admin/users",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/users/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/admin/users/{userId}",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/admin/roles",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/users/{userId}/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/admin/users/{userId}/roles",
+      "UpstreamHttpMethod": ["POST", "DELETE"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/admin/test",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5117
+        }
+      ],
+      "UpstreamPathTemplate": "/api/admin/test",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/shipments/status",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5121
+        }
+      ],
+      "UpstreamPathTemplate": "/api/shipments/status",
+      "UpstreamHttpMethod": ["GET"]
+    },
+    {
+      "DownstreamPathTemplate": "/api/shipments/debug-headers",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5121
+        }
+      ],
+      "UpstreamPathTemplate": "/api/shipments/debug-headers",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/shipments/{trackingNumber}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5121
+        }
+      ],
+      "UpstreamPathTemplate": "/api/shipments/{trackingNumber}",
+      "UpstreamHttpMethod": ["GET"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/shipments",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5121
+        }
+      ],
+      "UpstreamPathTemplate": "/api/shipments",
+      "UpstreamHttpMethod": ["POST"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "X-User-Id": "Claims[sub] > value",
+        "X-User-Email": "Claims[email] > value",
+        "X-User-Permissions": "Claims[permissions] > value"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5100"
+  }
+}

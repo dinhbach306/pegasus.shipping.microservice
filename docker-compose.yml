@@ -1,0 +1,142 @@
+services:
+  # Identity Service Database
+  identity-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: identity-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "1433:1433"
+    volumes:
+      - identity_db_data:/var/opt/mssql
+    networks:
+      - pegasus-network
+
+  # Shipping Service Database
+  shipping-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: shipping-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "1434:1433"
+    volumes:
+      - shipping_db_data:/var/opt/mssql
+    networks:
+      - pegasus-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: pegasus-kafka
+    user: root
+    networks:
+      - pegasus-network
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093,PLAINTEXT_HOST://0.0.0.0:29092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
+
+    ports:
+      - "29092:29092"
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: pegasus-kafka-ui
+    depends_on:
+      - kafka
+    networks:
+      - pegasus-network
+    environment:
+      KAFKA_CLUSTERS_0_NAME: "local"
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
+    ports:
+      - "8080:8080"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: pegasus-otel-collector
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    networks:
+      - pegasus-network
+    volumes:
+      - ./deploy/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "8889:8889"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: pegasus-prometheus
+    networks:
+      - pegasus-network
+    volumes:
+      - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: pegasus-grafana
+    networks:
+      - pegasus-network
+    ports:
+      - "3000:3000"
+
+  loki:
+    image: grafana/loki:2.9.4
+    container_name: pegasus-loki
+    command: -config.file=/etc/loki/loki-config.yml
+    networks:
+      - pegasus-network
+    volumes:
+      - ./deploy/loki-config.yml:/etc/loki/loki-config.yml
+      - loki_data:/loki
+    ports:
+      - "3100:3100"
+
+  promtail:
+    image: grafana/promtail:2.9.4
+    container_name: pegasus-promtail
+    command: -config.file=/etc/promtail/promtail-config.yml
+    networks:
+      - pegasus-network
+    volumes:
+      - ./deploy/promtail-config.yml:/etc/promtail/promtail-config.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - loki
+
+  tempo:
+    image: grafana/tempo:2.4.1
+    container_name: pegasus-tempo
+    command: ["-config.file=/etc/tempo/tempo-config.yml"]
+    networks:
+      - pegasus-network
+    volumes:
+      - ./deploy/tempo-config.yml:/etc/tempo/tempo-config.yml
+    ports:
+      - "3200:3200"
+      - "4319:4317"
+
+networks:
+  pegasus-network:
+    driver: bridge
+
+volumes:
+  identity_db_data:
+  shipping_db_data:
+  loki_data:
