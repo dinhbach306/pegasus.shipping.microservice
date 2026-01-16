@@ -1,4 +1,6 @@
+using MapsterMapper;
 using Messaging;
+using Shipping.Application.DTOs;
 using Shipping.Application.Events;
 using Shipping.Domain;
 
@@ -6,11 +8,13 @@ namespace Shipping.Application;
 
 public sealed class ShipmentService(
     IShipmentRepository repository,
-    IKafkaProducer producer) : IShipmentService
+    IKafkaProducer producer,
+    IMapper mapper) : IShipmentService
 {
-    public async Task<Shipment> CreateAsync(string trackingNumber, string? createdByUserId, string? createdByEmail, CancellationToken cancellationToken = default)
+    public async Task<Shipment> CreateAsync(CreateShipmentRequest request, string? createdByUserId, string? createdByEmail, CancellationToken cancellationToken = default)
     {
-        var shipment = new Shipment(trackingNumber);
+        // Map DTO to Domain entity
+        var shipment = mapper.Map<Shipment>(request);
         await repository.AddAsync(shipment, cancellationToken);
         
         // Publish event to Kafka - topic dedicated to Shipping service

@@ -1,7 +1,9 @@
+using MapsterMapper;
 using Messaging;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 using Shipping.Application;
+using Shipping.Application.DTOs;
 
 namespace Shipping.Api.Controllers;
 
@@ -10,6 +12,7 @@ namespace Shipping.Api.Controllers;
 public sealed class ShipmentsController(
     IShipmentService shipmentService, 
     IShipmentRepository shipmentRepository,
+    IMapper mapper,
     HeaderUserContext userContext) : ControllerBase
 {
     /// <summary>
@@ -79,9 +82,11 @@ public sealed class ShipmentsController(
             return NotFound(new { error = "Shipment not found", trackingNumber });
         }
 
+        var shipmentDto = mapper.Map<ShipmentDto>(shipment);
+
         return Ok(new
         {
-            shipment,
+            shipment = shipmentDto,
             requestedBy = new
             {
                 userContext.UserId,
@@ -107,15 +112,17 @@ public sealed class ShipmentsController(
 
         // Create shipment and publish event to Kafka
         var shipment = await shipmentService.CreateAsync(
-            request.TrackingNumber, 
+            request, 
             userContext.UserId, 
             userContext.Email, 
             cancellationToken);
         
+        var shipmentDto = mapper.Map<ShipmentDto>(shipment);
+        
         return CreatedAtAction(nameof(GetByTrackingNumber), new { trackingNumber = shipment.TrackingNumber }, 
             new
             {
-                shipment,
+                shipment = shipmentDto,
                 createdBy = new
                 {
                     userContext.UserId,
@@ -152,6 +159,3 @@ public sealed class ShipmentsController(
         });
     }
 }
-
-public sealed record CreateShipmentRequest(string TrackingNumber);
-

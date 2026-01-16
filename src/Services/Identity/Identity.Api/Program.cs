@@ -1,6 +1,7 @@
 using Identity.Api.Authorization;
 // using Identity.Api.Consumers;
 // using Identity.Application.Events;
+using Identity.Application;
 using Identity.Infrastructure;
 using Messaging;
 using ServiceDefaults;
@@ -9,6 +10,7 @@ using SharedKernel;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServiceDefaults(builder.Configuration);
+builder.Services.AddIdentityApplication();
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddKafkaProducer(builder.Configuration);
 

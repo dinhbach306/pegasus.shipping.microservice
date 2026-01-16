@@ -2,11 +2,13 @@ using Messaging;
 using ServiceDefaults;
 using SharedKernel;
 using Shipping.Api.Authorization;
+using Shipping.Application;
 using Shipping.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServiceDefaults(builder.Configuration);
+builder.Services.AddShippingApplication();
 builder.Services.AddShippingInfrastructure(builder.Configuration);
 builder.Services.AddKafkaProducer(builder.Configuration);
 
