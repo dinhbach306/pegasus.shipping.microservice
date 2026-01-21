@@ -1,0 +1,1 @@
+Always response is Vietnamese.
