@@ -32,6 +32,7 @@ public sealed class AdminController(
                 requestedBy = new
                 {
                     userContext.UserId,
+                    userContext.UserName,
                     userContext.Email,
                     permissions = userContext.Permissions
                 }
@@ -92,6 +93,7 @@ public sealed class AdminController(
                 requestedBy = new
                 {
                     userContext.UserId,
+                    userContext.UserName,
                     userContext.Email,
                     permissions = userContext.Permissions
                 }
@@ -128,6 +130,7 @@ public sealed class AdminController(
                 assignedBy = new
                 {
                     userContext.UserId,
+                    userContext.UserName,
                     userContext.Email,
                     permissions = userContext.Permissions
                 }
@@ -164,6 +167,7 @@ public sealed class AdminController(
                 removedBy = new
                 {
                     userContext.UserId,
+                    userContext.UserName,
                     userContext.Email,
                     permissions = userContext.Permissions
                 }
@@ -188,6 +192,7 @@ public sealed class AdminController(
             user = new
             {
                 userContext.UserId,
+                userContext.UserName,
                 userContext.Email,
                 permissions = userContext.Permissions
             }

@@ -7,6 +7,9 @@ public sealed class HeaderUserContext
 {
     public string? UserId { get; init; }
     public string? Email { get; init; }
+    
+    public string? UserName { get; init; }
+    
     public string[] Permissions { get; init; } = Array.Empty<string>();
     
     public bool IsAuthenticated => !string.IsNullOrEmpty(UserId);

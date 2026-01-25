@@ -35,32 +35,32 @@ public sealed class ShipmentsController(
     /// <summary>
     /// DEBUG endpoint - Shows headers received from API Gateway
     /// </summary>
-    [HttpGet("debug-headers")]
-    public IActionResult DebugHeaders()
-    {
-        var userId = Request.Headers["X-User-Id"].FirstOrDefault();
-        var email = Request.Headers["X-User-Email"].FirstOrDefault();
-        var permissions = Request.Headers["X-User-Permissions"].FirstOrDefault();
-
-        return Ok(new
-        {
-            receivedHeaders = new
-            {
-                userId,
-                email,
-                permissions,
-                permissionsArray = permissions?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray()
-            },
-            userContext = new
-            {
-                userContext.UserId,
-                userContext.Email,
-                userContext.Permissions,
-                userContext.IsAuthenticated
-            },
-            allHeaders = Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString())
-        });
-    }
+    // [HttpGet("debug-headers")]
+    // public IActionResult DebugHeaders()
+    // {
+    //     var userId = Request.Headers["X-User-Id"].FirstOrDefault();
+    //     var email = Request.Headers["X-User-Email"].FirstOrDefault();
+    //     var permissions = Request.Headers["X-User-Permissions"].FirstOrDefault();
+    //
+    //     return Ok(new
+    //     {
+    //         receivedHeaders = new
+    //         {
+    //             userId,
+    //             email,
+    //             permissions,
+    //             permissionsArray = permissions?.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray()
+    //         },
+    //         userContext = new
+    //         {
+    //             userContext.UserId,
+    //             userContext.Email,
+    //             userContext.Permissions,
+    //             userContext.IsAuthenticated
+    //         },
+    //         allHeaders = Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString())
+    //     });
+    // }
 
     /// <summary>
     /// PRIVATE endpoint - Requires read:products permission
@@ -90,6 +90,7 @@ public sealed class ShipmentsController(
             requestedBy = new
             {
                 userContext.UserId,
+                userContext.UserName,
                 userContext.Email,
                 permissions = userContext.Permissions
             }
@@ -113,7 +114,8 @@ public sealed class ShipmentsController(
         // Create shipment and publish event to Kafka
         var shipment = await shipmentService.CreateAsync(
             request, 
-            userContext.UserId, 
+            userContext.UserId,
+            userContext.UserName,
             userContext.Email, 
             cancellationToken);
         
@@ -126,6 +128,7 @@ public sealed class ShipmentsController(
                 createdBy = new
                 {
                     userContext.UserId,
+                    userContext.UserName,
                     userContext.Email,
                     permissions = userContext.Permissions
                 },
@@ -153,6 +156,7 @@ public sealed class ShipmentsController(
             deletedBy = new
             {
                 userContext.UserId,
+                userContext.UserName,
                 userContext.Email,
                 permissions = userContext.Permissions
             }

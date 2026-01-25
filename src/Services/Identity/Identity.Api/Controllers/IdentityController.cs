@@ -81,7 +81,9 @@ public sealed class IdentityController(
         return Ok(new
         {
             userId = userContext.UserId,
-            email = userContext.Email
+            userName = userContext.UserName,
+            email = userContext.Email,
+            permissions = userContext.Permissions
         });
     }
 }

@@ -11,7 +11,7 @@ public sealed class ShipmentService(
     IKafkaProducer producer,
     IMapper mapper) : IShipmentService
 {
-    public async Task<Shipment> CreateAsync(CreateShipmentRequest request, string? createdByUserId, string? createdByEmail, CancellationToken cancellationToken = default)
+    public async Task<Shipment> CreateAsync(CreateShipmentRequest request, string? createdByUserId, string? createByUsername, string? createdByEmail, CancellationToken cancellationToken = default)
     {
         // Map DTO to Domain entity
         var shipment = mapper.Map<Shipment>(request);
@@ -23,11 +23,12 @@ public sealed class ShipmentService(
             shipment.TrackingNumber,
             shipment.Status,
             shipment.CreatedAt,
+            createByUsername ?? "anonymous",
             createdByUserId ?? "anonymous",
             createdByEmail ?? "anonymous@system"
         );
         
-        await producer.ProduceAsync(KafkaTopics.ShipmentCreated, shipment.Id.ToString(), @event, cancellationToken);
+        await producer.ProduceAsync(KafkaTopics.ShipmentCreated, shipment.Id.ToString(), @event, null, cancellationToken);
         
         return shipment;
     }

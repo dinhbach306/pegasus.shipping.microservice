@@ -5,6 +5,10 @@ namespace Shipping.Application;
 
 public interface IShipmentService
 {
-    Task<Shipment> CreateAsync(CreateShipmentRequest request, string? createdByUserId, string? createdByEmail, CancellationToken cancellationToken = default);
+    Task<Shipment> CreateAsync(CreateShipmentRequest request,
+        string? createdByUserId,
+        string? createByUserName,
+        string? createdByEmail,
+        CancellationToken cancellationToken = default);
 }
 

@@ -29,6 +29,7 @@ builder.Services.AddScoped<HeaderUserContext>(provider =>
     {
         UserId = httpContext?.Request.Headers["X-User-Id"].FirstOrDefault(),
         Email = httpContext?.Request.Headers["X-User-Email"].FirstOrDefault(),
+        UserName =  httpContext?.Request.Headers["X-User-Name"].FirstOrDefault(),
         Permissions = permissions
     };
 });

@@ -1,3 +1,4 @@
+using System.Text;
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 
@@ -11,13 +12,29 @@ public sealed class KafkaProducer(IOptions<KafkaOptions> options) : IKafkaProduc
         ClientId = options.Value.ClientId
     }).Build();
 
-    public async Task PublishAsync(string topic, string key, string payload, CancellationToken cancellationToken = default)
+    public async Task PublishAsync(
+        string topic, 
+        string key, 
+        string payload, 
+        IDictionary<string, string>? headers = null,
+        CancellationToken cancellationToken = default)
     {
-        await _producer.ProduceAsync(topic, new Message<string, string>
+        var message = new Message<string, string>
         {
             Key = key,
             Value = payload
-        }, cancellationToken);
+        };
+
+        if (headers != null)
+        {
+            message.Headers = new Headers();
+            foreach (var header in headers)
+            {
+                message.Headers.Add(header.Key, Encoding.UTF8.GetBytes(header.Value));
+            }
+        }
+
+        await _producer.ProduceAsync(topic, message, cancellationToken);
     }
 
     public void Dispose() => _producer.Dispose();

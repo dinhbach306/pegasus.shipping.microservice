@@ -3,11 +3,16 @@
   <ItemGroup>
     <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel\SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Messaging\Messaging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Handlers\" />
   </ItemGroup>
 
   <PropertyGroup>

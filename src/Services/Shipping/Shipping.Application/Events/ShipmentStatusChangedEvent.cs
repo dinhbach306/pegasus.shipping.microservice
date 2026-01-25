@@ -1,3 +1,5 @@
+using Messaging;
+
 namespace Shipping.Application.Events;
 
 public sealed record ShipmentStatusChangedEvent(
@@ -6,5 +8,12 @@ public sealed record ShipmentStatusChangedEvent(
     string OldStatus,
     string NewStatus,
     DateTime ChangedAt
-);
+) : BaseEvent
+{
+    public ShipmentStatusChangedEvent() : this(Guid.Empty, string.Empty, string.Empty, string.Empty, DateTime.MinValue)
+    {
+        EventType = nameof(ShipmentStatusChangedEvent);
+        SourceService = "ShippingService";
+    }
+}
 

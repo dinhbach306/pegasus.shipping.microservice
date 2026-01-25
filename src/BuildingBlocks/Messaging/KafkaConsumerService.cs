@@ -3,6 +3,7 @@ using Confluent.Kafka;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging;
 
@@ -13,17 +14,17 @@ public sealed class KafkaConsumerService<TMessage> : BackgroundService
     where TMessage : class
 {
     private readonly IConsumer<string, string> _consumer;
-    private readonly IKafkaConsumer<TMessage> _messageHandler;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<KafkaConsumerService<TMessage>> _logger;
     private readonly string _topic;
 
     public KafkaConsumerService(
         IOptions<KafkaOptions> options,
-        IKafkaConsumer<TMessage> messageHandler,
+        IServiceProvider serviceProvider,
         ILogger<KafkaConsumerService<TMessage>> logger,
         string topic)
     {
-        _messageHandler = messageHandler;
+        _serviceProvider = serviceProvider;
         _logger = logger;
         _topic = topic;
 
@@ -62,11 +63,21 @@ public sealed class KafkaConsumerService<TMessage> : BackgroundService
                         consumeResult.Offset,
                         consumeResult.Message.Key);
 
-                    var message = JsonSerializer.Deserialize<TMessage>(consumeResult.Message.Value);
+                    // Use camelCase to match serialization policy
+                    var jsonOptions = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true, // Allow case-insensitive matching
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    };
+                    
+                    var message = JsonSerializer.Deserialize<TMessage>(consumeResult.Message.Value, jsonOptions);
                     
                     if (message != null)
                     {
-                        await _messageHandler.HandleAsync(message, stoppingToken);
+                        using var scope = _serviceProvider.CreateScope();
+                        var messageHandler = scope.ServiceProvider.GetRequiredService<IKafkaConsumer<TMessage>>();
+
+                        await messageHandler.HandleAsync(message, stoppingToken);
                         _consumer.Commit(consumeResult);
                         
                         _logger.LogInformation(

@@ -17,7 +17,7 @@ public static class KafkaConsumerExtensions
         services.AddHostedService(provider =>
             new KafkaConsumerService<TMessage>(
                 provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<KafkaOptions>>(),
-                provider.GetRequiredService<IKafkaConsumer<TMessage>>(),
+                provider,
                 provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<KafkaConsumerService<TMessage>>>(),
                 topic));
 

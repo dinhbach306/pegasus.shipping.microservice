@@ -66,6 +66,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -87,6 +88,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -108,6 +110,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -129,6 +132,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -150,6 +154,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -171,6 +176,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -204,6 +210,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -225,6 +232,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     },
@@ -246,6 +254,7 @@
       "AddHeadersToRequest": {
         "X-User-Id": "Claims[sub] > value",
         "X-User-Email": "Claims[email] > value",
+        "X-User-Name": "Claims[name] > value",
         "X-User-Permissions": "Claims[permissions] > value"
       }
     }

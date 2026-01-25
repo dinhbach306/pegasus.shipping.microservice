@@ -19,10 +19,10 @@ public sealed class ShipmentCreatedConsumer : IKafkaConsumer<ShipmentCreatedEven
     public Task HandleAsync(ShipmentCreatedEvent message, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation(
-            "Received ShipmentCreated event: ShipmentId={ShipmentId}, TrackingNumber={TrackingNumber}, CreatedBy={UserId}",
+            "Received ShipmentCreated event: ShipmentId={ShipmentId}, TrackingNumber={TrackingNumber}, CreatedBy={Username}",
             message.ShipmentId,
             message.TrackingNumber,
-            message.CreatedByUserId);
+            message.CreateByUserName);
 
         // Example: Update user statistics, send notification, etc.
         // For now, just log the event

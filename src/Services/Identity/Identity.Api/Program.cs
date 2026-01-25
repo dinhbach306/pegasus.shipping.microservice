@@ -1,6 +1,6 @@
 using Identity.Api.Authorization;
-// using Identity.Api.Consumers;
-// using Identity.Application.Events;
+using Identity.Api.Consumers;
+using Identity.Application.Events;
 using Identity.Application;
 using Identity.Infrastructure;
 using Messaging;
@@ -16,7 +16,7 @@ builder.Services.AddKafkaProducer(builder.Configuration);
 
 // Example: Subscribe to events from other services
 // Uncomment to enable cross-service event handling
-// builder.Services.AddKafkaConsumer<ShipmentCreatedEvent, ShipmentCreatedConsumer>(KafkaTopics.ShipmentCreated);
+builder.Services.AddKafkaConsumer<ShipmentCreatedEvent, ShipmentCreatedConsumer>(KafkaTopics.ShipmentCreated);
 
 // Register user context from headers (forwarded by API Gateway)
 builder.Services.AddHttpContextAccessor();
@@ -35,6 +35,7 @@ builder.Services.AddScoped<HeaderUserContext>(provider =>
     {
         UserId = httpContext?.Request.Headers["X-User-Id"].FirstOrDefault(),
         Email = httpContext?.Request.Headers["X-User-Email"].FirstOrDefault(),
+        UserName = httpContext?.Request.Headers["X-User-Name"].FirstOrDefault(),
         Permissions = permissions
     };
 });
