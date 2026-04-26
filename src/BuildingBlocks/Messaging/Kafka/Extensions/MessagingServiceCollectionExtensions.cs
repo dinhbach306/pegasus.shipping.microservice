@@ -1,7 +1,8 @@
+using Messaging.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Messaging;
+namespace Messaging.Kafka.Extensions;
 
 public static class MessagingServiceCollectionExtensions
 {
@@ -9,7 +10,10 @@ public static class MessagingServiceCollectionExtensions
     {
         services.AddOptions<KafkaOptions>()
             .Bind(configuration.GetSection(KafkaOptions.SectionName));
+        
+        services.AddSingleton<IKafkaMessageSerializer, KafkaMessageSerializer>();
         services.AddSingleton<IKafkaProducer, KafkaProducer>();
+        
         return services;
     }
 }

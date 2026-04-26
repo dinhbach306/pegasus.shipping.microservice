@@ -1,5 +1,6 @@
 using MapsterMapper;
-using Messaging;
+using Messaging.Abstractions;
+using Messaging.Kafka;
 using Shipping.Application.DTOs;
 using Shipping.Application.Events;
 using Shipping.Domain;

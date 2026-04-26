@@ -3,7 +3,8 @@ using Identity.Api.Consumers;
 using Identity.Application.Events;
 using Identity.Application;
 using Identity.Infrastructure;
-using Messaging;
+using Messaging.Kafka;
+using Messaging.Kafka.Extensions;
 using ServiceDefaults;
 using SharedKernel;
 

@@ -1,5 +1,5 @@
 using Identity.Application.Events;
-using Messaging;
+using Messaging.Abstractions;
 
 namespace Identity.Api.Consumers;
 

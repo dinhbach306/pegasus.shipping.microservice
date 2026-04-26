@@ -1,4 +1,4 @@
-using Messaging;
+using Messaging.Kafka.Extensions;
 using ServiceDefaults;
 using SharedKernel;
 using Shipping.Api.Authorization;

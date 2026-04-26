@@ -1,4 +1,4 @@
-namespace Messaging;
+namespace Messaging.Kafka;
 
 /// <summary>
 /// Centralized Kafka topic names for all services

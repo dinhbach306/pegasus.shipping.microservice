@@ -1,6 +1,9 @@
+using Messaging.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace Messaging;
+namespace Messaging.Kafka.Extensions;
 
 public static class KafkaConsumerExtensions
 {
@@ -14,11 +17,16 @@ public static class KafkaConsumerExtensions
         where THandler : class, IKafkaConsumer<TMessage>
     {
         services.AddScoped<IKafkaConsumer<TMessage>, THandler>();
+        
+        // Ensure serializer is registered if not already
+        services.AddSingleton<IKafkaMessageSerializer, KafkaMessageSerializer>();
+
         services.AddHostedService(provider =>
             new KafkaConsumerService<TMessage>(
-                provider.GetRequiredService<Microsoft.Extensions.Options.IOptions<KafkaOptions>>(),
+                provider.GetRequiredService<IOptions<KafkaOptions>>(),
                 provider,
-                provider.GetRequiredService<Microsoft.Extensions.Logging.ILogger<KafkaConsumerService<TMessage>>>(),
+                provider.GetRequiredService<ILogger<KafkaConsumerService<TMessage>>>(),
+                provider.GetRequiredService<IKafkaMessageSerializer>(),
                 topic));
 
         return services;

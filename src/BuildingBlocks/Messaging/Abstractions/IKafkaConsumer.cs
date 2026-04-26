@@ -1,4 +1,4 @@
-namespace Messaging;
+namespace Messaging.Abstractions;
 
 /// <summary>
 /// Interface for Kafka message consumers

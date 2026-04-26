@@ -1,5 +1,5 @@
 using MapsterMapper;
-using Messaging;
+using Messaging.Kafka;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 using Shipping.Application;
